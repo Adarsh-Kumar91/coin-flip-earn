@@ -7,6 +7,7 @@ export interface TaskOffer {
   iconBg: string;
   steps: string[];
   disclaimer: string[];
+  url: string;
 }
 
 export const taskOffers: TaskOffer[] = [
@@ -26,6 +27,7 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "This app must not be installed in your device earlier",
     ],
+    url: "https://www.foundit.in",
   },
   {
     id: "hdfc-ergo",
@@ -44,6 +46,7 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "This app must not be installed in your device earlier",
     ],
+    url: "https://www.hdfcergo.com",
   },
   {
     id: "unstop",
@@ -62,6 +65,7 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "Account must be new",
     ],
+    url: "https://unstop.com",
   },
   {
     id: "groww",
@@ -79,6 +83,7 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "KYC must be completed fully",
     ],
+    url: "https://groww.in",
   },
 ];
 
