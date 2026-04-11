@@ -20,7 +20,7 @@ const Index = () => {
             <span className="text-foreground font-semibold text-sm">5</span>
           </div>
           <div className="flex items-center gap-1.5 bg-secondary rounded-full px-3 py-1.5">
-            <Flame size={16} className="text-orange-500" />
+            <Flame size={16} className="text-primary" />
             <span className="text-foreground text-xs font-semibold">Play & Earn</span>
           </div>
         </div>
