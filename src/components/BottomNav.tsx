@@ -3,9 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const tabs = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: ClipboardList, label: "Tasks", path: "/" },
-  { icon: UserPlus, label: "Refer", path: "/" },
-  { icon: Gift, label: "Rewards", path: "/" },
+  { icon: ClipboardList, label: "Tasks", path: "/tasks" },
+  { icon: UserPlus, label: "Refer", path: "/refer" },
+  { icon: Gift, label: "Rewards", path: "/rewards" },
   { icon: User, label: "Profile", path: "/profile" },
 ];
 
