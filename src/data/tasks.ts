@@ -27,6 +27,7 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "This app must not be installed in your device earlier",
     ],
+    url: "https://www.foundit.in",
   },
   {
     id: "hdfc-ergo",
@@ -45,9 +46,8 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "This app must not be installed in your device earlier",
     ],
+    url: "https://www.hdfcergo.com",
   },
-  {
-    id: "unstop",
     name: "Unstop",
     description: "Register Now",
     coins: 500,
@@ -63,9 +63,8 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "Account must be new",
     ],
+    url: "https://unstop.com",
   },
-  {
-    id: "groww",
     name: "Groww",
     description: "Install and complete KYC",
     coins: 800,
@@ -80,6 +79,7 @@ export const taskOffers: TaskOffer[] = [
       "Any fraud activity will block your Account and all payment will be Cancelled",
       "KYC must be completed fully",
     ],
+    url: "https://groww.in",
   },
 ];
 
