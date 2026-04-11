@@ -1,16 +1,57 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Zap, Flame } from "lucide-react";
+import BalanceCard from "@/components/BalanceCard";
+import CategoryCards from "@/components/CategoryCards";
+import TaskOfferItem from "@/components/TaskOfferItem";
+import BottomNav from "@/components/BottomNav";
+import { taskOffers } from "@/data/tasks";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-background max-w-md mx-auto pb-20">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 pt-6">
+        <div>
+          <span className="text-muted-foreground text-sm">Hi, </span>
+          <span className="text-foreground text-xl font-bold">sanjeev</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 bg-secondary rounded-full px-3 py-1.5">
+            <Zap size={16} className="text-primary" />
+            <span className="text-foreground font-semibold text-sm">5</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-secondary rounded-full px-3 py-1.5">
+            <Flame size={16} className="text-orange-500" />
+            <span className="text-foreground text-xs font-semibold">Play & Earn</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Balance */}
+      <div className="px-4">
+        <BalanceCard balance={499} />
+      </div>
+
+      {/* Category Cards */}
+      <div className="px-4 mt-5">
+        <CategoryCards />
+      </div>
+
+      {/* Task Offers */}
+      <div className="px-4 mt-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-foreground">TaskOffers</h2>
+          <button className="text-muted-foreground text-sm">view all</button>
+        </div>
+        <div className="flex flex-col gap-3">
+          {taskOffers.map((task) => (
+            <TaskOfferItem key={task.id} task={task} />
+          ))}
+        </div>
+      </div>
+
+      <BottomNav />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
