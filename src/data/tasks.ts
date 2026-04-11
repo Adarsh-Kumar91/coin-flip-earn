@@ -7,6 +7,7 @@ export interface TaskOffer {
   iconBg: string;
   steps: string[];
   disclaimer: string[];
+  url: string;
 }
 
 export const taskOffers: TaskOffer[] = [
