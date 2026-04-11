@@ -48,6 +48,8 @@ export const taskOffers: TaskOffer[] = [
     ],
     url: "https://www.hdfcergo.com",
   },
+  {
+    id: "unstop",
     name: "Unstop",
     description: "Register Now",
     coins: 500,
@@ -65,6 +67,8 @@ export const taskOffers: TaskOffer[] = [
     ],
     url: "https://unstop.com",
   },
+  {
+    id: "groww",
     name: "Groww",
     description: "Install and complete KYC",
     coins: 800,
