@@ -4,20 +4,22 @@ import CategoryCards from "@/components/CategoryCards";
 import TaskOfferItem from "@/components/TaskOfferItem";
 import BottomNav from "@/components/BottomNav";
 import { taskOffers } from "@/data/tasks";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
+  const { profile } = useAuth();
+
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto pb-20">
-      {/* Header */}
       <div className="flex items-center justify-between p-4 pt-6">
         <div>
           <span className="text-muted-foreground text-sm">Hi, </span>
-          <span className="text-foreground text-xl font-bold">sanjeev</span>
+          <span className="text-foreground text-xl font-bold">{profile?.display_name || "User"}</span>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 bg-secondary rounded-full px-3 py-1.5">
             <Zap size={16} className="text-primary" />
-            <span className="text-foreground font-semibold text-sm">5</span>
+            <span className="text-foreground font-semibold text-sm">{profile?.tasks_completed || 0}</span>
           </div>
           <div className="flex items-center gap-1.5 bg-secondary rounded-full px-3 py-1.5">
             <Flame size={16} className="text-primary" />
@@ -26,17 +28,14 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Balance */}
       <div className="px-4">
-        <BalanceCard balance={499} />
+        <BalanceCard balance={profile?.balance || 0} />
       </div>
 
-      {/* Category Cards */}
       <div className="px-4 mt-5">
         <CategoryCards />
       </div>
 
-      {/* Task Offers */}
       <div className="px-4 mt-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-foreground">TaskOffers</h2>

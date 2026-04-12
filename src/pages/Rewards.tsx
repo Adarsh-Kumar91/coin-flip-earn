@@ -1,6 +1,7 @@
 import BottomNav from "@/components/BottomNav";
 import { Gift, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const rewards = [
   { id: 1, name: "₹50 Paytm Cash", coins: 500, icon: "💰" },
@@ -12,7 +13,8 @@ const rewards = [
 
 const Rewards = () => {
   const navigate = useNavigate();
-  const balance = 499;
+  const { profile } = useAuth();
+  const balance = profile?.balance || 0;
 
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto pb-20">
@@ -24,12 +26,8 @@ const Rewards = () => {
         <p className="text-muted-foreground text-sm mt-1">Redeem your coins for exciting rewards</p>
       </div>
 
-      {/* Balance */}
       <div className="px-4">
-        <div
-          className="rounded-xl p-5 text-center"
-          style={{ background: "var(--gold-gradient)" }}
-        >
+        <div className="rounded-xl p-5 text-center" style={{ background: "var(--gold-gradient)" }}>
           <p className="text-primary-foreground/80 text-sm font-medium">Available Balance</p>
           <div className="flex items-center justify-center gap-2 mt-1">
             <span className="text-4xl font-bold text-primary-foreground">{balance}</span>
@@ -38,7 +36,6 @@ const Rewards = () => {
         </div>
       </div>
 
-      {/* Rewards List */}
       <div className="px-4 mt-5">
         <h2 className="text-foreground font-bold text-lg mb-3">Available Rewards</h2>
         <div className="flex flex-col gap-3">
@@ -46,9 +43,7 @@ const Rewards = () => {
             const canRedeem = balance >= reward.coins;
             return (
               <div key={reward.id} className="bg-card rounded-xl p-4 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-2xl">
-                  {reward.icon}
-                </div>
+                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-2xl">{reward.icon}</div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-foreground font-bold text-sm">{reward.name}</h3>
                   <p className="text-primary text-xs font-semibold mt-0.5">{reward.coins} 🪙</p>
@@ -56,28 +51,14 @@ const Rewards = () => {
                 <button
                   disabled={!canRedeem}
                   onClick={() => canRedeem && navigate(`/withdraw?reward=${encodeURIComponent(reward.name)}&coins=${reward.coins}`)}
-                  className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-bold transition-transform active:scale-95 ${
-                    canRedeem
-                      ? "text-primary-foreground"
-                      : "bg-secondary text-muted-foreground cursor-not-allowed"
-                  }`}
+                  className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-bold transition-transform active:scale-95 ${canRedeem ? "text-primary-foreground" : "bg-secondary text-muted-foreground cursor-not-allowed"}`}
                   style={canRedeem ? { background: "var(--gold-gradient)" } : undefined}
                 >
-                  Redeem
-                  <ArrowRight size={14} />
+                  Redeem <ArrowRight size={14} />
                 </button>
               </div>
             );
           })}
-        </div>
-      </div>
-
-      {/* History */}
-      <div className="px-4 mt-6">
-        <h2 className="text-foreground font-bold text-lg mb-3">Redemption History</h2>
-        <div className="bg-card rounded-xl p-5 text-center">
-          <p className="text-muted-foreground text-sm">No redemptions yet</p>
-          <p className="text-muted-foreground text-xs mt-1">Complete tasks to earn more coins!</p>
         </div>
       </div>
 
