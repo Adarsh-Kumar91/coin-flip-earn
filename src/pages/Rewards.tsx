@@ -1,5 +1,6 @@
 import BottomNav from "@/components/BottomNav";
 import { Gift, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const rewards = [
   { id: 1, name: "₹50 Paytm Cash", coins: 500, icon: "💰" },
@@ -10,6 +11,7 @@ const rewards = [
 ];
 
 const Rewards = () => {
+  const navigate = useNavigate();
   const balance = 499;
 
   return (
@@ -53,6 +55,7 @@ const Rewards = () => {
                 </div>
                 <button
                   disabled={!canRedeem}
+                  onClick={() => canRedeem && navigate(`/withdraw?reward=${encodeURIComponent(reward.name)}&coins=${reward.coins}`)}
                   className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-bold transition-transform active:scale-95 ${
                     canRedeem
                       ? "text-primary-foreground"
