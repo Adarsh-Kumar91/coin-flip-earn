@@ -10,6 +10,7 @@ import Profile from "./pages/Profile.tsx";
 import Tasks from "./pages/Tasks.tsx";
 import Refer from "./pages/Refer.tsx";
 import Rewards from "./pages/Rewards.tsx";
+import Withdraw from "./pages/Withdraw.tsx";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/refer" element={<Refer />} />
           <Route path="/rewards" element={<Rewards />} />
           <Route path="/task/:id" element={<TaskDetail />} />
+          <Route path="/withdraw" element={<Withdraw />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
