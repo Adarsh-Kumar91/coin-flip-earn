@@ -58,9 +58,7 @@ const Auth = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: "var(--gold-gradient)" }}>
-            <Zap size={32} className="text-primary-foreground" />
-          </div>
+          <img src="/logo.png" alt="TaskCoins" width={80} height={80} className="mx-auto mb-2" />
           <h1 className="text-3xl font-bold text-foreground">TaskCoins</h1>
           <p className="text-muted-foreground text-sm mt-1">Earn coins, refer friends, withdraw cash</p>
         </div>
