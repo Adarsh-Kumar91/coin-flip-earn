@@ -12,9 +12,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto pb-20">
       <div className="flex items-center justify-between p-4 pt-6">
-        <div>
-          <span className="text-muted-foreground text-sm">Hi, </span>
-          <span className="text-foreground text-xl font-bold">{profile?.display_name || "User"}</span>
+        <div className="flex items-center gap-2.5">
+          <img src="/logo.png" alt="TaskCoins" width={36} height={36} />
+          <div>
+            <span className="text-muted-foreground text-xs">Welcome back,</span>
+            <p className="text-foreground text-base font-bold -mt-0.5">{profile?.display_name || "User"}</p>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 bg-secondary rounded-full px-3 py-1.5">
