@@ -13,6 +13,7 @@ import Refer from "./pages/Refer.tsx";
 import Rewards from "./pages/Rewards.tsx";
 import Withdraw from "./pages/Withdraw.tsx";
 import Auth from "./pages/Auth.tsx";
+import AdminTasks from "./pages/AdminTasks.tsx";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/task/:id" element={<ProtectedRoute><TaskDetail /></ProtectedRoute>} />
             <Route path="/withdraw" element={<ProtectedRoute><Withdraw /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/admin/tasks" element={<ProtectedRoute><AdminTasks /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

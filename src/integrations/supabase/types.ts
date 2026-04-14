@@ -83,6 +83,54 @@ export type Database = {
         }
         Relationships: []
       }
+      task_offers: {
+        Row: {
+          coins: number
+          created_at: string
+          created_by: string
+          description: string
+          disclaimer: string[]
+          icon: string
+          icon_bg: string
+          id: string
+          is_active: boolean
+          name: string
+          steps: string[]
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          coins?: number
+          created_at?: string
+          created_by: string
+          description: string
+          disclaimer?: string[]
+          icon?: string
+          icon_bg?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          steps?: string[]
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          coins?: number
+          created_at?: string
+          created_by?: string
+          description?: string
+          disclaimer?: string[]
+          icon?: string
+          icon_bg?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          steps?: string[]
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
