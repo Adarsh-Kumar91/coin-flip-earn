@@ -1,4 +1,4 @@
-import { ArrowLeft, User, Copy, LogOut } from "lucide-react";
+import { ArrowLeft, User, Copy, LogOut, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -68,6 +68,20 @@ const Profile = () => {
         <div className="bg-card rounded-xl p-4">
           <p className="text-muted-foreground text-xs uppercase tracking-wider font-semibold">Email</p>
           <p className="text-foreground font-medium text-sm mt-1">{profile?.email}</p>
+        </div>
+
+        <button
+          onClick={() => navigate("/admin/tasks")}
+          className="bg-card rounded-xl p-4 flex items-center gap-3 w-full active:scale-[0.98] transition-transform"
+        >
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Settings size={20} className="text-primary" />
+          </div>
+          <div className="text-left">
+            <p className="text-foreground font-bold text-sm">Manage Tasks</p>
+            <p className="text-muted-foreground text-xs">Add, edit or delete task offers</p>
+          </div>
+          <ArrowLeft size={16} className="text-muted-foreground ml-auto rotate-180" />
         </div>
       </div>
     </div>
