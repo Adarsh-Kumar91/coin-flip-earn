@@ -13,6 +13,7 @@ import Refer from "./pages/Refer.tsx";
 import Rewards from "./pages/Rewards.tsx";
 import Withdraw from "./pages/Withdraw.tsx";
 import Auth from "./pages/Auth.tsx";
+import AdminTasks from "./pages/AdminTasks.tsx";
 
 const queryClient = new QueryClient();
 
