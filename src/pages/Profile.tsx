@@ -82,7 +82,7 @@ const Profile = () => {
             <p className="text-muted-foreground text-xs">Add, edit or delete task offers</p>
           </div>
           <ArrowLeft size={16} className="text-muted-foreground ml-auto rotate-180" />
-        </div>
+        </button>
       </div>
     </div>
   );
