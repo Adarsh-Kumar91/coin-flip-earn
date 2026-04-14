@@ -40,6 +40,7 @@ const App = () => (
             <Route path="/task/:id" element={<ProtectedRoute><TaskDetail /></ProtectedRoute>} />
             <Route path="/withdraw" element={<ProtectedRoute><Withdraw /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/admin/tasks" element={<ProtectedRoute><AdminTasks /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
