@@ -1,13 +1,14 @@
+import { useTaskOffers } from "@/hooks/useTaskOffers";
+import TaskOfferItem from "@/components/TaskOfferItem";
+import BottomNav from "@/components/BottomNav";
 import { Zap, Flame } from "lucide-react";
 import BalanceCard from "@/components/BalanceCard";
 import CategoryCards from "@/components/CategoryCards";
-import TaskOfferItem from "@/components/TaskOfferItem";
-import BottomNav from "@/components/BottomNav";
-import { taskOffers } from "@/data/tasks";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const { profile } = useAuth();
+  const { tasks, loading } = useTaskOffers();
 
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto pb-20">
@@ -45,9 +46,15 @@ const Index = () => {
           <button className="text-muted-foreground text-sm">view all</button>
         </div>
         <div className="flex flex-col gap-3">
-          {taskOffers.map((task) => (
-            <TaskOfferItem key={task.id} task={task} />
-          ))}
+          {loading ? (
+            <p className="text-muted-foreground text-center py-4">Loading...</p>
+          ) : tasks.length === 0 ? (
+            <p className="text-muted-foreground text-center py-4">Abhi koi task available nahi hai</p>
+          ) : (
+            tasks.map((task) => (
+              <TaskOfferItem key={task.id} task={task} />
+            ))
+          )}
         </div>
       </div>
 
