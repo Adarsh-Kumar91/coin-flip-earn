@@ -1,12 +1,24 @@
+import { useState, useEffect } from "react";
 import { ArrowLeft, User, Copy, LogOut, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { profile, signOut } = useAuth();
+  const { profile, user, signOut } = useAuth();
   const { toast } = useToast();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!user) return;
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
+      setIsAdmin(!!data);
+    };
+    checkAdmin();
+  }, [user]);
 
   const handleLogout = async () => {
     await signOut();
@@ -70,19 +82,21 @@ const Profile = () => {
           <p className="text-foreground font-medium text-sm mt-1">{profile?.email}</p>
         </div>
 
-        <button
-          onClick={() => navigate("/admin/tasks")}
-          className="bg-card rounded-xl p-4 flex items-center gap-3 w-full active:scale-[0.98] transition-transform"
-        >
-          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Settings size={20} className="text-primary" />
-          </div>
-          <div className="text-left">
-            <p className="text-foreground font-bold text-sm">Manage Tasks</p>
-            <p className="text-muted-foreground text-xs">Add, edit or delete task offers</p>
-          </div>
-          <ArrowLeft size={16} className="text-muted-foreground ml-auto rotate-180" />
-        </button>
+        {isAdmin && (
+          <button
+            onClick={() => navigate("/admin/tasks")}
+            className="bg-card rounded-xl p-4 flex items-center gap-3 w-full active:scale-[0.98] transition-transform"
+          >
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Settings size={20} className="text-primary" />
+            </div>
+            <div className="text-left">
+              <p className="text-foreground font-bold text-sm">Manage Tasks</p>
+              <p className="text-muted-foreground text-xs">Add, edit or delete task offers</p>
+            </div>
+            <ArrowLeft size={16} className="text-muted-foreground ml-auto rotate-180" />
+          </button>
+        )}
       </div>
     </div>
   );

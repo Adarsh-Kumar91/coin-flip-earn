@@ -43,6 +43,17 @@ const AdminTasks = () => {
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyTask);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!user) { navigate("/auth"); return; }
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
+      if (!data) { toast({ title: "Access denied! Only admin can manage tasks.", variant: "destructive" }); navigate("/"); return; }
+      setIsAdmin(true);
+    };
+    checkAdmin();
+  }, [user]);
 
   const fetchTasks = async () => {
     if (!user) return;
@@ -116,6 +127,8 @@ const AdminTasks = () => {
   const updateDisclaimer = (i: number, v: string) => setForm(f => ({ ...f, disclaimer: f.disclaimer.map((d, idx) => idx === i ? v : d) }));
   const removeStep = (i: number) => setForm(f => ({ ...f, steps: f.steps.filter((_, idx) => idx !== i) }));
   const removeDisclaimer = (i: number) => setForm(f => ({ ...f, disclaimer: f.disclaimer.filter((_, idx) => idx !== i) }));
+
+  if (!isAdmin) return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
 
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto pb-20">
