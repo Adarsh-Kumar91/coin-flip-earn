@@ -20,12 +20,34 @@ const Withdraw = () => {
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const handleWithdraw = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleWithdraw = async () => {
     if (!accountDetail.trim()) {
       toast({ title: "Error", description: "Please enter your account details", variant: "destructive" });
       return;
     }
+    setLoading(true);
+    try {
+      const webhookUrl = "https://prince-workflows.app.n8n.cloud/webhook/Payment details";
+      const payload = {
+        reward: rewardName,
+        coins: rewardCoins,
+        method: selectedMethod,
+        methodLabel: methods.find(m => m.id === selectedMethod)?.label,
+        accountDetail: accountDetail.trim(),
+        timestamp: new Date().toISOString(),
+      };
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error("Webhook error:", err);
+    }
     setSubmitted(true);
+    setLoading(false);
     toast({ title: "Withdrawal Requested! ✅", description: `${rewardName} will be sent to your ${methods.find(m => m.id === selectedMethod)?.label} shortly.` });
   };
 
@@ -119,10 +141,11 @@ const Withdraw = () => {
       <div className="px-4 mt-6">
         <button
           onClick={handleWithdraw}
-          className="w-full py-4 rounded-xl text-primary-foreground font-bold text-base active:scale-[0.98] transition-transform"
+          disabled={loading}
+          className="w-full py-4 rounded-xl text-primary-foreground font-bold text-base active:scale-[0.98] transition-transform disabled:opacity-50"
           style={{ background: "var(--gold-gradient)" }}
         >
-          Confirm Withdrawal
+          {loading ? "Processing..." : "Confirm Withdrawal"}
         </button>
         <p className="text-muted-foreground text-xs text-center mt-3">
           Processing time: 24-48 hours
