@@ -43,6 +43,17 @@ const AdminTasks = () => {
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyTask);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!user) { navigate("/auth"); return; }
+      const { data } = await supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin").maybeSingle();
+      if (!data) { toast({ title: "Access denied! Only admin can manage tasks.", variant: "destructive" }); navigate("/"); return; }
+      setIsAdmin(true);
+    };
+    checkAdmin();
+  }, [user]);
 
   const fetchTasks = async () => {
     if (!user) return;
