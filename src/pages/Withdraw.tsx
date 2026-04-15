@@ -29,28 +29,52 @@ const Withdraw = () => {
       toast({ title: "Error", description: "Please enter your account details", variant: "destructive" });
       return;
     }
+    if (!profile || profile.balance < rewardCoins) {
+      toast({ title: "Insufficient Coins", description: "You don't have enough coins for this reward", variant: "destructive" });
+      return;
+    }
     setLoading(true);
     try {
+      // Deduct coins from balance
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ balance: profile.balance - rewardCoins })
+        .eq("user_id", profile.user_id);
+
+      if (updateError) throw updateError;
+
+      // Record transaction
+      await supabase.from("transactions").insert({
+        user_id: profile.user_id,
+        type: "withdrawal",
+        amount: -rewardCoins,
+        description: `Redeemed ${rewardName} via ${methods.find(m => m.id === selectedMethod)?.label}`,
+      });
+
+      // Send to n8n webhook
       const webhookUrl = "https://prince-workflows.app.n8n.cloud/webhook/Payment details";
-      const payload = {
-        reward: rewardName,
-        coins: rewardCoins,
-        method: selectedMethod,
-        methodLabel: methods.find(m => m.id === selectedMethod)?.label,
-        accountDetail: accountDetail.trim(),
-        timestamp: new Date().toISOString(),
-      };
       await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify({
+          reward: rewardName,
+          coins: rewardCoins,
+          method: selectedMethod,
+          methodLabel: methods.find(m => m.id === selectedMethod)?.label,
+          accountDetail: accountDetail.trim(),
+          timestamp: new Date().toISOString(),
+        }),
+      }).catch(err => console.error("Webhook error:", err));
+
+      // Refresh profile to update balance everywhere
+      await refreshProfile?.();
+      setSubmitted(true);
+      toast({ title: "Withdrawal Requested! ✅", description: `${rewardName} will be sent to your ${methods.find(m => m.id === selectedMethod)?.label} shortly.` });
     } catch (err) {
-      console.error("Webhook error:", err);
+      console.error("Withdrawal error:", err);
+      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
     }
-    setSubmitted(true);
     setLoading(false);
-    toast({ title: "Withdrawal Requested! ✅", description: `${rewardName} will be sent to your ${methods.find(m => m.id === selectedMethod)?.label} shortly.` });
   };
 
   if (submitted) {
