@@ -141,10 +141,11 @@ const Withdraw = () => {
       <div className="px-4 mt-6">
         <button
           onClick={handleWithdraw}
-          className="w-full py-4 rounded-xl text-primary-foreground font-bold text-base active:scale-[0.98] transition-transform"
+          disabled={loading}
+          className="w-full py-4 rounded-xl text-primary-foreground font-bold text-base active:scale-[0.98] transition-transform disabled:opacity-50"
           style={{ background: "var(--gold-gradient)" }}
         >
-          Confirm Withdrawal
+          {loading ? "Processing..." : "Confirm Withdrawal"}
         </button>
         <p className="text-muted-foreground text-xs text-center mt-3">
           Processing time: 24-48 hours
