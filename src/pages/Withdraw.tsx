@@ -16,12 +16,12 @@ const Withdraw = () => {
   const [searchParams] = useSearchParams();
   const rewardName = searchParams.get("reward") || "Reward";
   const rewardCoins = Number(searchParams.get("coins") || 0);
+  const { profile, refreshProfile } = useAuth();
 
   const [selectedMethod, setSelectedMethod] = useState("upi");
   const [accountDetail, setAccountDetail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
-
   const [loading, setLoading] = useState(false);
 
   const handleWithdraw = async () => {
