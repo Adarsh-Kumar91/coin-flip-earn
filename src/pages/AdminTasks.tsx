@@ -128,6 +128,8 @@ const AdminTasks = () => {
   const removeStep = (i: number) => setForm(f => ({ ...f, steps: f.steps.filter((_, idx) => idx !== i) }));
   const removeDisclaimer = (i: number) => setForm(f => ({ ...f, disclaimer: f.disclaimer.filter((_, idx) => idx !== i) }));
 
+  if (!isAdmin) return <div className="min-h-screen bg-background flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
+
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto pb-20">
       <div className="p-4 pt-6 flex items-center gap-3">
