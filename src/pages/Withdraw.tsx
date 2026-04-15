@@ -2,6 +2,8 @@ import { ArrowLeft, Banknote, Smartphone, CreditCard } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const methods = [
   { id: "upi", label: "UPI", icon: Smartphone, placeholder: "Enter UPI ID (e.g. name@upi)" },
