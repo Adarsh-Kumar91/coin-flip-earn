@@ -20,6 +20,7 @@ const Withdraw = () => {
 
   const [selectedMethod, setSelectedMethod] = useState("upi");
   const [accountDetail, setAccountDetail] = useState("");
+  const [ifsc, setIfsc] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -51,20 +52,22 @@ const Withdraw = () => {
         description: `Redeemed ${rewardName} via ${methods.find(m => m.id === selectedMethod)?.label}`,
       });
 
-      // Send to n8n webhook
-      const webhookUrl = "https://prince-workflows.app.n8n.cloud/webhook/Payment details";
-      await fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      // Notify admin via Telegram
+      await supabase.functions.invoke("notify-withdrawal", {
+        body: {
+          userName: profile.display_name,
+          userEmail: profile.email,
+          userPhone: profile.phone,
+          userId: profile.user_id,
           reward: rewardName,
           coins: rewardCoins,
           method: selectedMethod,
           methodLabel: methods.find(m => m.id === selectedMethod)?.label,
           accountDetail: accountDetail.trim(),
-          timestamp: new Date().toISOString(),
-        }),
-      }).catch(err => console.error("Webhook error:", err));
+          ifsc: selectedMethod === "bank" ? ifsc.trim() : undefined,
+          remainingBalance: profile.balance - rewardCoins,
+        },
+      }).catch(err => console.error("Telegram notify error:", err));
 
       // Refresh profile to update balance everywhere
       await refreshProfile?.();
@@ -157,6 +160,8 @@ const Withdraw = () => {
         {selectedMethod === "bank" && (
           <input
             type="text"
+            value={ifsc}
+            onChange={(e) => setIfsc(e.target.value)}
             placeholder="Enter IFSC Code"
             className="w-full bg-card rounded-xl p-4 text-foreground text-sm placeholder:text-muted-foreground outline-none border-2 border-transparent focus:border-primary transition-colors mt-2"
           />
