@@ -14,6 +14,7 @@ import Rewards from "./pages/Rewards.tsx";
 import Withdraw from "./pages/Withdraw.tsx";
 import Auth from "./pages/Auth.tsx";
 import AdminTasks from "./pages/AdminTasks.tsx";
+import TransactionHistory from "./pages/TransactionHistory.tsx";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/withdraw" element={<ProtectedRoute><Withdraw /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/admin/tasks" element={<ProtectedRoute><AdminTasks /></ProtectedRoute>} />
+            <Route path="/transactions" element={<ProtectedRoute><TransactionHistory /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, User, Copy, LogOut, Settings } from "lucide-react";
+import { ArrowLeft, User, Copy, LogOut, Settings, History } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -76,6 +76,20 @@ const Profile = () => {
             <p className="text-muted-foreground text-xs mt-1">Referrals</p>
           </div>
         </div>
+
+        <button
+          onClick={() => navigate("/transactions")}
+          className="bg-card rounded-xl p-4 flex items-center gap-3 w-full active:scale-[0.98] transition-transform"
+        >
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <History size={20} className="text-primary" />
+          </div>
+          <div className="text-left">
+            <p className="text-foreground font-bold text-sm">Transaction History</p>
+            <p className="text-muted-foreground text-xs">View all earnings & redemptions</p>
+          </div>
+          <ArrowLeft size={16} className="text-muted-foreground ml-auto rotate-180" />
+        </button>
 
         <div className="bg-card rounded-xl p-4">
           <p className="text-muted-foreground text-xs uppercase tracking-wider font-semibold">Email</p>
