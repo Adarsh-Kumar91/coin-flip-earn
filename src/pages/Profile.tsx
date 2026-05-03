@@ -77,6 +77,20 @@ const Profile = () => {
           </div>
         </div>
 
+        <button
+          onClick={() => navigate("/transactions")}
+          className="bg-card rounded-xl p-4 flex items-center gap-3 w-full active:scale-[0.98] transition-transform"
+        >
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <History size={20} className="text-primary" />
+          </div>
+          <div className="text-left">
+            <p className="text-foreground font-bold text-sm">Transaction History</p>
+            <p className="text-muted-foreground text-xs">View all earnings & redemptions</p>
+          </div>
+          <ArrowLeft size={16} className="text-muted-foreground ml-auto rotate-180" />
+        </button>
+
         <div className="bg-card rounded-xl p-4">
           <p className="text-muted-foreground text-xs uppercase tracking-wider font-semibold">Email</p>
           <p className="text-foreground font-medium text-sm mt-1">{profile?.email}</p>
