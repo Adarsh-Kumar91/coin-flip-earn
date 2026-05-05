@@ -71,14 +71,15 @@ const AdminTasks = () => {
 
   const handleSave = async () => {
     if (!user) return;
-    if (!form.name || !form.url) {
-      toast({ title: "Name aur URL dena zaroori hai", variant: "destructive" });
+    const taskUrl = normalizeTaskUrl(form.url);
+    if (!form.name.trim() || !taskUrl) {
+      toast({ title: "App ka naam aur valid link dena zaroori hai", variant: "destructive" });
       return;
     }
 
     const payload = {
       ...form,
-      url: normalizeTaskUrl(form.url),
+      url: taskUrl,
       steps: form.steps.filter(s => s.trim()),
       disclaimer: form.disclaimer.filter(d => d.trim()),
       created_by: user.id,
@@ -159,7 +160,7 @@ const AdminTasks = () => {
 
             <Input placeholder="App ka naam" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
             <Input placeholder="Short description" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
-            <Input placeholder="App URL / Link" value={form.url} onChange={e => setForm(f => ({ ...f, url: e.target.value }))} />
+            <Input placeholder="Sirf app/website link paste karo" value={form.url} onChange={e => setForm(f => ({ ...f, url: e.target.value }))} />
             <div className="flex gap-2">
               <Input type="number" placeholder="Coins (100-200)" value={form.coins} onChange={e => setForm(f => ({ ...f, coins: Number(e.target.value) }))} className="flex-1" />
               <Input placeholder="Icon text (2-3 letters)" value={form.icon} onChange={e => setForm(f => ({ ...f, icon: e.target.value }))} className="flex-1" />

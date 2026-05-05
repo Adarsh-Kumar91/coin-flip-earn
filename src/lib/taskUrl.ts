@@ -1,14 +1,28 @@
 const PLAY_STORE_DETAILS_URL = "https://play.google.com/store/apps/details";
 
+const safeDecode = (value: string) => {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+};
+
+const extractFirstUrl = (value: string) => {
+  const trimmed = value.trim();
+  const match = trimmed.match(/(?:https?:\/\/|www\.)[^\s]+/i);
+  return (match?.[0] || trimmed).replace(/[),.]+$/g, "");
+};
+
 const getPackageId = (value: string) => {
-  const decoded = decodeURIComponent(value);
+  const decoded = safeDecode(value);
   const idMatch = decoded.match(/[?&#]id=([^&#;]+)/);
   const packageMatch = decoded.match(/;package=([^;#]+)/);
   return idMatch?.[1] || packageMatch?.[1] || "";
 };
 
 export const normalizeTaskUrl = (value: string) => {
-  const rawUrl = value.trim();
+  const rawUrl = extractFirstUrl(value);
   if (!rawUrl) return "";
 
   const packageId = getPackageId(rawUrl);
@@ -18,6 +32,14 @@ export const normalizeTaskUrl = (value: string) => {
 
   if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
     return rawUrl;
+  }
+
+  if (rawUrl.startsWith("www.")) {
+    return `https://${rawUrl}`;
+  }
+
+  if (!rawUrl.includes(".") || rawUrl.includes(" ")) {
+    return "";
   }
 
   return `https://${rawUrl}`;
