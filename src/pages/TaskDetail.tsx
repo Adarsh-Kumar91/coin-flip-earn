@@ -71,9 +71,20 @@ const TaskDetail = () => {
       </div>
 
       <div className="p-4 mt-auto">
-        <a href={task.url} target="_blank" rel="noopener noreferrer" className="block w-full py-4 rounded-xl font-bold text-lg text-primary-foreground text-center" style={{ background: "var(--gold-gradient)" }}>
+        <button
+          onClick={() => {
+            const url = task.url.startsWith("http") ? task.url : `https://${task.url}`;
+            // Force external browser instead of in-app WebView
+            const newWindow = window.open(url, "_system");
+            if (!newWindow) {
+              window.location.href = url;
+            }
+          }}
+          className="block w-full py-4 rounded-xl font-bold text-lg text-primary-foreground text-center"
+          style={{ background: "var(--gold-gradient)" }}
+        >
           Start Task
-        </a>
+        </button>
       </div>
     </div>
   );
