@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import BottomNav from "@/components/BottomNav";
+import { normalizeTaskUrl } from "@/lib/taskUrl";
 
 interface TaskOffer {
   id: string;
@@ -77,6 +78,7 @@ const AdminTasks = () => {
 
     const payload = {
       ...form,
+      url: normalizeTaskUrl(form.url),
       steps: form.steps.filter(s => s.trim()),
       disclaimer: form.disclaimer.filter(d => d.trim()),
       created_by: user.id,
