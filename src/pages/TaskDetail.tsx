@@ -3,6 +3,7 @@ import { ArrowLeft, AlertTriangle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { TaskOffer } from "@/hooks/useTaskOffers";
+import { openTaskUrl } from "@/lib/taskUrl";
 
 const TaskDetail = () => {
   const { id } = useParams();
@@ -72,14 +73,7 @@ const TaskDetail = () => {
 
       <div className="p-4 mt-auto">
         <button
-          onClick={() => {
-            const url = task.url.startsWith("http") ? task.url : `https://${task.url}`;
-            // Force external browser instead of in-app WebView
-            const newWindow = window.open(url, "_system");
-            if (!newWindow) {
-              window.location.href = url;
-            }
-          }}
+          onClick={() => openTaskUrl(task.url)}
           className="block w-full py-4 rounded-xl font-bold text-lg text-primary-foreground text-center"
           style={{ background: "var(--gold-gradient)" }}
         >
