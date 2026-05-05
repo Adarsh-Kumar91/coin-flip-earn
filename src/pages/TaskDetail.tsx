@@ -3,7 +3,7 @@ import { ArrowLeft, AlertTriangle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { TaskOffer } from "@/hooks/useTaskOffers";
-import { openTaskUrl } from "@/lib/taskUrl";
+import { normalizeTaskUrl } from "@/lib/taskUrl";
 
 const TaskDetail = () => {
   const { id } = useParams();
@@ -26,6 +26,7 @@ const TaskDetail = () => {
 
   if (loading) return <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">Loading...</div>;
   if (!task) return <div className="min-h-screen bg-background flex items-center justify-center text-foreground">Task not found</div>;
+  const taskUrl = normalizeTaskUrl(task.url);
 
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto flex flex-col">
@@ -72,13 +73,15 @@ const TaskDetail = () => {
       </div>
 
       <div className="p-4 mt-auto">
-        <button
-          onClick={() => openTaskUrl(task.url)}
-          className="block w-full py-4 rounded-xl font-bold text-lg text-primary-foreground text-center"
+        <a
+          href={taskUrl || undefined}
+          target="_blank"
+          rel="noopener noreferrer external"
+          className={`block w-full py-4 rounded-xl font-bold text-lg text-primary-foreground text-center ${!taskUrl ? "pointer-events-none opacity-60" : ""}`}
           style={{ background: "var(--gold-gradient)" }}
         >
           Start Task
-        </button>
+        </a>
       </div>
     </div>
   );
