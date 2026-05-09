@@ -3,11 +3,14 @@ import { ArrowLeft, AlertTriangle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { TaskOffer } from "@/hooks/useTaskOffers";
-import { normalizeTaskUrl } from "@/lib/taskUrl";
+import { isPlayStoreUrl, normalizeTaskUrl, openTaskUrl } from "@/lib/taskUrl";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const TaskDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [task, setTask] = useState<TaskOffer | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,6 +30,20 @@ const TaskDetail = () => {
   if (loading) return <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">Loading...</div>;
   if (!task) return <div className="min-h-screen bg-background flex items-center justify-center text-foreground">Task not found</div>;
   const taskUrl = normalizeTaskUrl(task.url);
+  const playStoreTask = isPlayStoreUrl(task.url);
+
+  const handleStartTask = async () => {
+    const result = await openTaskUrl(task.url, task.name);
+
+    if (!result.ok) {
+      toast({ title: "Task link valid nahi hai", variant: "destructive" });
+      return;
+    }
+
+    if (result.action === "copied") {
+      toast({ title: "Link copy ho gaya. Browser ya Play Store me paste karke open karo." });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto flex flex-col">
@@ -73,15 +90,15 @@ const TaskDetail = () => {
       </div>
 
       <div className="p-4 mt-auto">
-        <a
-          href={taskUrl || undefined}
-          target="_blank"
-          rel="noopener noreferrer external"
-          className={`block w-full py-4 rounded-xl font-bold text-lg text-primary-foreground text-center ${!taskUrl ? "pointer-events-none opacity-60" : ""}`}
+        <Button
+          type="button"
+          disabled={!taskUrl}
+          onClick={handleStartTask}
+          className="w-full py-6 rounded-xl font-bold text-lg text-primary-foreground disabled:opacity-60"
           style={{ background: "var(--gold-gradient)" }}
         >
-          Start Task
-        </a>
+          {playStoreTask ? "Share / Copy Play Store Link" : "Start Task"}
+        </Button>
       </div>
     </div>
   );
