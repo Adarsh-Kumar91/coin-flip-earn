@@ -179,11 +179,43 @@ export type Database = {
         }
         Relationships: []
       }
+      user_task_completions: {
+        Row: {
+          coins_awarded: number
+          completed_at: string
+          id: string
+          task_id: string
+          user_id: string
+        }
+        Insert: {
+          coins_awarded?: number
+          completed_at?: string
+          id?: string
+          task_id: string
+          user_id: string
+        }
+        Update: {
+          coins_awarded?: number
+          completed_at?: string
+          id?: string
+          task_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      claim_task_reward: {
+        Args: { _task_id: string }
+        Returns: {
+          already_claimed: boolean
+          awarded: boolean
+          coins: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
