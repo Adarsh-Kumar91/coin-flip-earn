@@ -6,13 +6,22 @@ import { TaskOffer } from "@/hooks/useTaskOffers";
 import { isPlayStoreUrl, normalizeTaskUrl, openTaskUrl } from "@/lib/taskUrl";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+
+type ClaimTaskRewardResult = {
+  awarded: boolean;
+  coins: number;
+  already_claimed: boolean;
+};
 
 const TaskDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { refreshProfile } = useAuth();
   const [task, setTask] = useState<TaskOffer | null>(null);
   const [loading, setLoading] = useState(true);
+  const [starting, setStarting] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -33,7 +42,29 @@ const TaskDetail = () => {
   const playStoreTask = isPlayStoreUrl(task.url);
 
   const handleStartTask = async () => {
+    if (!taskUrl || starting) return;
+    setStarting(true);
+
+    const { data, error } = await (supabase as unknown as {
+      rpc: (fn: "claim_task_reward", args: { _task_id: string }) => Promise<{ data: ClaimTaskRewardResult[] | null; error: Error | null }>;
+    }).rpc("claim_task_reward", { _task_id: task.id });
+
+    if (error) {
+      setStarting(false);
+      toast({ title: "Coins add nahi ho paye", description: "Dobara try karo.", variant: "destructive" });
+      return;
+    }
+
+    const reward = data?.[0];
+    if (reward?.awarded) {
+      await refreshProfile();
+      toast({ title: `${reward.coins} coins mil gaye 🪙` });
+    } else if (reward?.already_claimed) {
+      toast({ title: "Is task ke coins pehle mil chuke hain" });
+    }
+
     const result = await openTaskUrl(task.url, task.name);
+    setStarting(false);
 
     if (!result.ok) {
       toast({ title: "Task link valid nahi hai", variant: "destructive" });
@@ -92,12 +123,12 @@ const TaskDetail = () => {
       <div className="p-4 mt-auto">
         <Button
           type="button"
-          disabled={!taskUrl}
+          disabled={!taskUrl || starting}
           onClick={handleStartTask}
           className="w-full py-6 rounded-xl font-bold text-lg text-primary-foreground disabled:opacity-60"
           style={{ background: "var(--gold-gradient)" }}
         >
-          {playStoreTask ? "Share / Copy Play Store Link" : "Start Task"}
+          {starting ? "Starting..." : playStoreTask ? "Start Task & Get Coins" : "Start Task"}
         </Button>
       </div>
     </div>
