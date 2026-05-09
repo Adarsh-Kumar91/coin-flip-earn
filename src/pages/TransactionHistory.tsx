@@ -74,20 +74,35 @@ const TransactionHistory = () => {
       </div>
 
       {/* Summary Cards */}
-      <div className="px-4 grid grid-cols-2 gap-3">
+      <div className="px-4 grid grid-cols-3 gap-3">
         <div className="bg-card rounded-xl p-4">
-          <div className="flex items-center gap-2 mb-1">
-            <ArrowDownLeft size={16} className="text-green-400" />
-            <p className="text-muted-foreground text-xs uppercase tracking-wider font-semibold">Earned</p>
+          <div className="flex items-center gap-1.5 mb-1">
+            <ArrowDownLeft size={14} className="text-green-400" />
+            <p className="text-muted-foreground text-[10px] uppercase tracking-wider font-semibold">Earned</p>
           </div>
-          <p className="text-green-400 font-bold text-xl">{totalEarned} 🪙</p>
+          <p className="text-green-400 font-bold text-lg">{totalEarned} 🪙</p>
         </div>
         <div className="bg-card rounded-xl p-4">
-          <div className="flex items-center gap-2 mb-1">
-            <ArrowUpRight size={16} className="text-red-400" />
-            <p className="text-muted-foreground text-xs uppercase tracking-wider font-semibold">Redeemed</p>
+          <div className="flex items-center gap-1.5 mb-1">
+            <Coins size={14} className="text-primary" />
+            <p className="text-muted-foreground text-[10px] uppercase tracking-wider font-semibold">In ₹</p>
           </div>
-          <p className="text-red-400 font-bold text-xl">{totalRedeemed} 🪙</p>
+          <p className="text-primary font-bold text-lg">₹{(totalEarned / 10).toFixed(2)}</p>
+        </div>
+        <div className="bg-card rounded-xl p-4">
+          <div className="flex items-center gap-1.5 mb-1">
+            <ArrowUpRight size={14} className="text-red-400" />
+            <p className="text-muted-foreground text-[10px] uppercase tracking-wider font-semibold">Redeemed</p>
+          </div>
+          <p className="text-red-400 font-bold text-lg">{totalRedeemed} 🪙</p>
+        </div>
+      </div>
+
+      <div className="px-4 mt-3">
+        <div className="bg-gradient-to-r from-primary/15 to-primary/5 border border-primary/20 rounded-xl p-3 text-center">
+          <p className="text-muted-foreground text-[10px] uppercase tracking-wider font-semibold">Total Paisa Earned</p>
+          <p className="text-primary font-bold text-2xl mt-0.5">₹{(totalEarned / 10).toFixed(2)}</p>
+          <p className="text-muted-foreground text-[10px] mt-0.5">10 coins = ₹1</p>
         </div>
       </div>
 
