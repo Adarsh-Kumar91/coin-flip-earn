@@ -76,13 +76,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    // Initial session check
+    // Initial session check — always populate state from stored session
+    // so that page reloads (e.g. Android orientation change) don't briefly
+    // redirect a logged-in user to /auth.
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        // Only set loading false if no session — if there IS a session,
-        // onAuthStateChange will fire and handle it
-        setLoading(false);
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchProfile(session.user.id);
       }
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
