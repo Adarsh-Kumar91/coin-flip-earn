@@ -63,7 +63,14 @@ const TaskDetail = () => {
       toast({ title: "Is task ke coins pehle mil chuke hain" });
     }
 
-    const result = await openTaskUrl(task.url, task.name);
+    let result: Awaited<ReturnType<typeof openTaskUrl>>;
+    try {
+      result = await openTaskUrl(task.url, task.name);
+    } catch {
+      setStarting(false);
+      toast({ title: "Link open/copy nahi ho paya", description: taskUrl, variant: "destructive" });
+      return;
+    }
     setStarting(false);
 
     if (!result.ok) {
