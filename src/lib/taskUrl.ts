@@ -10,7 +10,7 @@ const safeDecode = (value: string) => {
 
 const extractFirstUrl = (value: string) => {
   const trimmed = value.trim();
-  const match = trimmed.match(/(?:https?:\/\/|www\.)[^\s]+/i);
+  const match = trimmed.match(/(?:https?:\/\/|intent:\/\/|market:\/\/|www\.)[^\s]+/i);
   return (match?.[0] || trimmed).replace(/[),.]+$/g, "");
 };
 
@@ -45,9 +45,46 @@ export const normalizeTaskUrl = (value: string) => {
   return `https://${rawUrl}`;
 };
 
-export const openTaskUrl = (value: string) => {
+const copyToClipboard = async (value: string) => {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+
+  const input = document.createElement("textarea");
+  input.value = value;
+  input.setAttribute("readonly", "");
+  input.style.position = "fixed";
+  input.style.opacity = "0";
+  document.body.appendChild(input);
+  input.select();
+  document.execCommand("copy");
+  input.remove();
+};
+
+export const isPlayStoreUrl = (value: string) => {
   const url = normalizeTaskUrl(value);
-  if (!url) return;
+  return Boolean(url && getPackageId(url) && url.includes("play.google.com/store/apps/details"));
+};
+
+export const openTaskUrl = async (value: string, title = "Task") => {
+  const url = normalizeTaskUrl(value);
+  if (!url) return { ok: false as const, action: "invalid" as const, url: "" };
+
+  if (isPlayStoreUrl(url)) {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: title, url });
+        return { ok: true as const, action: "shared" as const, url };
+      } catch {
+        await copyToClipboard(url);
+        return { ok: true as const, action: "copied" as const, url };
+      }
+    }
+
+    await copyToClipboard(url);
+    return { ok: true as const, action: "copied" as const, url };
+  }
 
   const link = document.createElement("a");
   link.href = url;
@@ -56,4 +93,5 @@ export const openTaskUrl = (value: string) => {
   document.body.appendChild(link);
   link.click();
   link.remove();
+  return { ok: true as const, action: "opened" as const, url };
 };
